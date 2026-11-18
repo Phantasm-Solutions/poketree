@@ -6,7 +6,7 @@ Status: **draft, awaiting art director approval**.
 |---|---|
 | Grid | 32 × 32 px tiles, top-down view for the club world; side view allowed inside minigames |
 | Characters | One fixed canvas size, 4 directions for the MVP, 8 later. Size: **64 px proposed** (room for readable faces and a level badge at 32 px tiles); 48 px is the alternative. Art director decides. |
-| Palette | Poketree's own bright, family-friendly palette, not Dagestan's dark parchment. Locked in Phase 1 batch 1.3 and saved here as `assets/palette.hex`; every asset is colour-reduced onto it. |
+| Palette | Poketree's own bright, family-friendly palette, not Dagestan's dark parchment. Locked 2026-11-18 in batch 1.3: `assets/palette.hex` (32 colours, swatch `assets/palette-proposal.svg`). Every asset is drawn on it or colour-reduced onto it. |
 | Outlines | Decided with the palette in 1.3. |
 | Rendering | Integer scaling, nearest-neighbor filtering, positions snapped to whole pixels |
 | Names | `<category>/<name>_<variant>_<animation>`, e.g. `poketree/lotus_stage1_idle` |

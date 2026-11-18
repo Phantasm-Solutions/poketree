@@ -43,7 +43,7 @@ Traced zones, all in `assets/maps/ngsc-blockout.tmj`: tennis courts (clay and ha
 
 ## Terrain art (1.3) — task list
 
-Status: **awaiting approval. Nothing generated yet.**
+Status: **generated 2026-11-18, awaiting art director review.** Approved: palette, path ↔ water for set B, one grass terrain.
 
 Output: three connected PixelLab top-down tilesets on one locked palette, so the blockout's grass, path, water and sand can be painted in 1.5. Court surfaces (clay, hard, pitch, track, kids garden) are not terrain sets: they come with the courts in 1.4.
 
@@ -51,7 +51,7 @@ Output: three connected PixelLab top-down tilesets on one locked palette, so the
 
 1. **Lock the palette.** Approve `assets/palette.hex` (32 colours, swatch in `assets/palette-proposal.svg`). On approval it is added to `assets/style-bible.md` and every later asset is drawn on it or colour-reduced onto it.
 2. **Set A · path ↔ grass.** Generated first; its grass tile becomes the shared grass for B and C.
-3. **Set B · water ↔ grass**, chained on A's grass.
+3. **Set B · water ↔ path**, chained on A's path (pools sit in paved decks).
 4. **Set C · sand ↔ grass**, chained on A's grass.
 5. **Check each sheet** before showing it: terrains not swapped, every pixel on the palette, seams tile in a 3 × 3 repeat. Then paint a test patch (Greenheart and the small pool from the blockout) with the three sets.
 6. **Review.** Art director approves or rejects each set; a rejected set gets a rewritten prompt and one regeneration.
@@ -73,7 +73,7 @@ Output: three connected PixelLab top-down tilesets on one locked palette, so the
 | Set | Lower terrain | Upper terrain | Shape | Walkable |
 |---|---|---|---|---|
 | A | light beige stone paving slabs, clean club walkway, subtle joints | bright green mowed lawn grass, short even blades, cheerful | roundness 0.5, raggedness 0 (paved edges are crisp) | both |
-| B | clear turquoise swimming pool water, gentle ripples, light caustics | grass from A (`upper_base_tile_id`) | roundness 0, raggedness 0 (pools are rectangular) | water no, grass yes |
+| B | clear turquoise swimming pool water, gentle ripples, light caustics | path from A (`upper_base_tile_id`) | roundness 0, raggedness 0 (pools are rectangular) | water no, path yes |
 | C | soft pale yellow playground sand, fine grain | grass from A (`upper_base_tile_id`) | roundness 1, raggedness 0.3 (soft natural edge) | both |
 
 Grass is always the upper terrain: PixelLab's docs say sets with grass as lower swap terrains more often.
@@ -82,7 +82,24 @@ Grass is always the upper terrain: PixelLab's docs say sets with grass as lower 
 
 Pro tilesets at 32 px cost 15 generations each: 45 for the three sets, 90 at most with one regeneration each. The account has 585.5 generations left in the cycle that resets 2026-11-22.
 
-### To decide before generating
+### Decided
 
-- **Water partner.** The plan says grass ↔ water, but in the blockout every pool sits in paving (pool decks), and only the kids water play touches grass. Option: make B **path ↔ water** (chained on A's path) instead. Recommended, since it matches what members see.
-- **One grass or two.** The blockout has `garden` and `lawn`. Proposal: one grass terrain; garden areas get trees and shrubs as props in 1.4.
+- Set B is **path ↔ water**, not grass ↔ water: every pool sits in a paved deck.
+- One grass terrain for `garden` and `lawn`; garden areas get trees and shrubs as props in 1.4.
+
+### Results (awaiting review)
+
+| Set | PixelLab tileset id | Sheet + Wang metadata |
+|---|---|---|
+| A · path ↔ grass | `be7ae4cb-dd48-4371-942f-2287eaddd46f` | `assets/raw/tilesets/path-grass.png` / `.json` |
+| B · water ↔ path | `dc87fe7f-2f7b-4d57-bc19-3e5cdb045be0` | `assets/raw/tilesets/water-path.png` / `.json` |
+| C · sand ↔ grass | `69875ba1-204a-4523-9f04-da6cece476f9` | `assets/raw/tilesets/sand-grass.png` / `.json` |
+
+Shared base tiles: grass `d1345a5b-b8ae-489d-a662-643e1cae241e`, path `39d909ea-13df-4da1-a30d-29f380e81c3f` (pasted exactly into B and C). Cost: 45 generations, no regenerations.
+
+Checks (`python assets/maps/tilecheck.py .` re-runs them): 16 tiles per set, 0 pixels off the palette, terrains not swapped. Test patch of Greenheart, both small pools and the kids water play: `assets/maps/terrain-test-patch.png`.
+
+Found by the test patch, for 1.5 to fix in the blockout:
+
+- The kids water play's water touches grass and sand directly (24 tiles); these sets have no grass ↔ water or sand ↔ water edge. Either give it a paved deck in `blockout.py` or add a grass ↔ water set in 1.4/1.5.
+- One-tile diagonal paths render as stair-steps; widen them to two tiles or straighten them.
