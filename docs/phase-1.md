@@ -101,5 +101,6 @@ Checks (`python assets/maps/tilecheck.py .` re-runs them): 16 tiles per set, 0 p
 
 Found by the test patch, for 1.5 to fix in the blockout:
 
-- The kids water play's water touches grass and sand directly (24 tiles); these sets have no grass ↔ water or sand ↔ water edge. Either give it a paved deck in `blockout.py` or add a grass ↔ water set in 1.4/1.5.
+- The kids water play's water touches grass and sand directly (22 tiles); these sets have no grass ↔ water or sand ↔ water edge. Either give it a paved deck in `blockout.py` or add a grass ↔ water set in 1.4/1.5.
+- Greenheart's west sand pit touches the path ring (5 tiles); there is no sand ↔ path edge. Pull the sand ellipse 1 tile into the lawn.
 - One-tile diagonal paths render as stair-steps; widen them to two tiles or straighten them.

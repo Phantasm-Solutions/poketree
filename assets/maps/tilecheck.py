@@ -2,7 +2,9 @@ import json, sys, os
 from collections import Counter
 from PIL import Image
 
-root = sys.argv[1]  # poketree repo
+# Checks the 1.3 tilesets (palette, tile count) and paints assets/maps/terrain-test-patch.png.
+# Usage: python assets/maps/tilecheck.py <repo root>
+root = sys.argv[1]
 ts_dir = os.path.join(root, "assets/raw/tilesets")
 pal = {tuple(int(h[i:i+2], 16) for i in (0, 2, 4)) for h in open(os.path.join(root, "assets/palette.hex")).read().split()}
 
