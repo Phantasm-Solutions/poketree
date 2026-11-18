@@ -40,3 +40,49 @@ Traced zones, all in `assets/maps/ngsc-blockout.tmj`: tennis courts (clay and ha
 - Main gate position.
 - Which pool is the Olympic one (likely under the covered hall).
 - What the east block next to the tennis courts is.
+
+## Terrain art (1.3) — task list
+
+Status: **awaiting approval. Nothing generated yet.**
+
+Output: three connected PixelLab top-down tilesets on one locked palette, so the blockout's grass, path, water and sand can be painted in 1.5. Court surfaces (clay, hard, pitch, track, kids garden) are not terrain sets: they come with the courts in 1.4.
+
+### Tasks
+
+1. **Lock the palette.** Approve `assets/palette.hex` (32 colours, swatch in `assets/palette-proposal.svg`). On approval it is added to `assets/style-bible.md` and every later asset is drawn on it or colour-reduced onto it.
+2. **Set A · path ↔ grass.** Generated first; its grass tile becomes the shared grass for B and C.
+3. **Set B · water ↔ grass**, chained on A's grass.
+4. **Set C · sand ↔ grass**, chained on A's grass.
+5. **Check each sheet** before showing it: terrains not swapped, every pixel on the palette, seams tile in a 3 × 3 repeat. Then paint a test patch (Greenheart and the small pool from the blockout) with the three sets.
+6. **Review.** Art director approves or rejects each set; a rejected set gets a rewritten prompt and one regeneration.
+7. **Save.** Sheets and Wang metadata to `assets/raw/tilesets/`; not added to `assets/manifest.json` until 1.5 packs them.
+
+### Settings, all three sets
+
+| Setting | Value | Why |
+|---|---|---|
+| Tool | `create_topdown_tileset`, `mode: "pro"` | Only pro takes a palette and pastes the shared grass exactly |
+| Tile size | 32 px | Style bible grid |
+| Transition | 0 (flat), 16 tiles per set | Ground only; no banks or walls |
+| View | low top-down | PixelLab's character default, so Phase 2 characters match. Barely visible on flat ground |
+| Palette | `assets/palette.hex`, name "Poketree" | Locks the map palette |
+| Detail / shading | medium detail, basic shading | Reads at phone size; family-friendly, not gritty |
+
+### Prompts
+
+| Set | Lower terrain | Upper terrain | Shape | Walkable |
+|---|---|---|---|---|
+| A | light beige stone paving slabs, clean club walkway, subtle joints | bright green mowed lawn grass, short even blades, cheerful | roundness 0.5, raggedness 0 (paved edges are crisp) | both |
+| B | clear turquoise swimming pool water, gentle ripples, light caustics | grass from A (`upper_base_tile_id`) | roundness 0, raggedness 0 (pools are rectangular) | water no, grass yes |
+| C | soft pale yellow playground sand, fine grain | grass from A (`upper_base_tile_id`) | roundness 1, raggedness 0.3 (soft natural edge) | both |
+
+Grass is always the upper terrain: PixelLab's docs say sets with grass as lower swap terrains more often.
+
+### Cost
+
+Pro tilesets at 32 px cost 15 generations each: 45 for the three sets, 90 at most with one regeneration each. The account has 585.5 generations left in the cycle that resets 2026-11-22.
+
+### To decide before generating
+
+- **Water partner.** The plan says grass ↔ water, but in the blockout every pool sits in paving (pool decks), and only the kids water play touches grass. Option: make B **path ↔ water** (chained on A's path) instead. Recommended, since it matches what members see.
+- **One grass or two.** The blockout has `garden` and `lawn`. Proposal: one grass terrain; garden areas get trees and shrubs as props in 1.4.
