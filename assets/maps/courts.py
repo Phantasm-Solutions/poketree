@@ -107,12 +107,13 @@ def multi_court():
         box = [hx - a, cy - a, hx + a, cy + a]
         d.arc(box, -90 if side == 0 else 90, 90 if side == 0 else 270, fill=WHITE, width=2)
     im.save(os.path.join(out_dir, "multi_court.png"))
+    im.transpose(Image.ROTATE_90).save(os.path.join(out_dir, "multi_court_v.png"))
 
 
 def stadium():
-    # 44 x 26 tiles: red running track (4 lanes) around a striped football pitch
+    # 38 x 22 tiles: red running track (4 lanes) around a striped football pitch
     global stripes_alt
-    W, H = 44 * T, 26 * T
+    W, H = 38 * T, 22 * T
     R = H // 2                      # outer radius
     lane, lanes = 16, 4
     ri = R - lane * lanes           # inner radius
@@ -134,8 +135,8 @@ def stadium():
         o = k * lane
         d.rounded_rectangle([o, o, W - 1 - o, H - 1 - o], radius=R - o - 1, outline=WHITE, width=1)
     d.rounded_rectangle([off, off, W - 1 - off, H - 1 - off], radius=ri, outline=WHITE, width=2)
-    # pitch 30 x 18 tiles, centred
-    pw, ph = 30 * T, 18 * T
+    # pitch 26 x 14 tiles, centred
+    pw, ph = 26 * T, 14 * T
     x0, y0 = (W - pw) // 2, (H - ph) // 2
     x1, y1 = x0 + pw - 1, y0 + ph - 1
     rect(d, x0, y0, x1, y1)
@@ -144,19 +145,43 @@ def stadium():
     r = 2 * T
     d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=WHITE, width=2)
     d.rectangle([cx - 2, cy - 2, cx + 2, cy + 2], fill=WHITE)
-    bw, bh = 4 * T, 10 * T      # penalty boxes
-    gw, gh = 2 * T, 5 * T       # goal boxes
+    bw, bh = 3 * T, 8 * T      # penalty boxes
+    gw, gh = 1 * T, 4 * T       # goal boxes
     for side in (0, 1):
         bx = x0 if side == 0 else x1 - bw
         gx = x0 if side == 0 else x1 - gw
         rect(d, bx, cy - bh // 2, bx + bw, cy + bh // 2)
         rect(d, gx, cy - gh // 2, gx + gw, cy + gh // 2)
-        px = x0 + 3 * T if side == 0 else x1 - 3 * T
+        px = x0 + 2 * T if side == 0 else x1 - 2 * T
         d.rectangle([px - 2, cy - 2, px + 2, cy + 2], fill=WHITE)
     im.save(os.path.join(out_dir, "stadium.png"))
 
 
+def decals():
+    # rooftop details, so large roofs read as buildings: AC unit and skylight (1 tile each)
+    ddir = os.path.join(root, "assets/raw/decals")
+    os.makedirs(ddir, exist_ok=True)
+    ac = Image.new("RGBA", (T, T))
+    d = ImageDraw.Draw(ac)
+    d.rectangle([6, 9, 25, 24], fill=C["a9b3bb"], outline=C["1e2430"])
+    d.rectangle([7, 22, 24, 23], fill=C["6c7680"])
+    d.ellipse([10, 11, 21, 21], fill=C["6c7680"], outline=C["3b3b4a"])
+    d.line([(15, 12), (15, 20)], fill=C["3b3b4a"]); d.line([(11, 16), (20, 16)], fill=C["3b3b4a"])
+    ac.save(os.path.join(ddir, "roof_ac.png"))
+    sk = Image.new("RGBA", (T, T))
+    d = ImageDraw.Draw(sk)
+    d.rectangle([4, 6, 27, 25], fill=C["2f86c8"], outline=C["1e2430"])
+    d.rectangle([6, 8, 25, 23], fill=C["4fb3e6"])
+    d.line([(15, 8), (15, 23)], fill=C["2f86c8"]); d.line([(6, 15), (25, 15)], fill=C["2f86c8"])
+    d.line([(7, 9), (12, 9)], fill=C["e8fbff"])
+    sk.save(os.path.join(ddir, "roof_skylight.png"))
+    gl = Image.open(os.path.join(root, "assets/raw/props/football_goal.png"))
+    gl.transpose(Image.ROTATE_90).save(os.path.join(root, "assets/raw/props/football_goal_w.png"))
+    gl.transpose(Image.ROTATE_270).save(os.path.join(root, "assets/raw/props/football_goal_e.png"))
+
+
 stripes_alt = None
+decals()
 tennis("tennis_clay", "d2763c", [("a5532a", 0.05), ("ec9a62", 0.04)], 1)
 tennis("tennis_hard", "2f5fa8", [("1f5f99", 0.05), ("2f86c8", 0.02)], 2)
 padel()

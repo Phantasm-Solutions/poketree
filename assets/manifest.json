@@ -1,3 +1,32 @@
 {
-  "assets": []
+  "version": 1,
+  "maps": {
+    "ngsc": "maps/ngsc.tmj"
+  },
+  "tilesets": {
+    "terrain": "maps/terrain.png",
+    "collision": "maps/collision.png"
+  },
+  "images": {
+    "bench": "sprites/bench.png",
+    "clubhouse_entrance": "sprites/clubhouse_entrance.png",
+    "football_goal_e": "sprites/football_goal_e.png",
+    "football_goal_w": "sprites/football_goal_w.png",
+    "fountain": "sprites/fountain.png",
+    "lamp_post": "sprites/lamp_post.png",
+    "main_gate": "sprites/main_gate.png",
+    "multi_court_v": "sprites/multi_court_v.png",
+    "padel": "sprites/padel.png",
+    "palm": "sprites/palm.png",
+    "playground": "sprites/playground.png",
+    "pool_umbrella": "sprites/pool_umbrella.png",
+    "roof_ac": "sprites/roof_ac.png",
+    "roof_skylight": "sprites/roof_skylight.png",
+    "shade_tree": "sprites/shade_tree.png",
+    "shrub": "sprites/shrub.png",
+    "splash_pad": "sprites/splash_pad.png",
+    "stadium": "sprites/stadium.png",
+    "tennis_clay": "sprites/tennis_clay.png",
+    "tennis_hard": "sprites/tennis_hard.png"
+  }
 }

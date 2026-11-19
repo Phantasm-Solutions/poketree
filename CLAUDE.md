@@ -33,5 +33,6 @@
 
 - `src/` game code (Phaser 3 + Vite, TypeScript)
 - `supabase/migrations/`, `supabase/seed.sql` — database schema and seed
-- `assets/maps/` — map sources (`blockout.py` regenerates `ngsc-blockout.tmj`)
+- `assets/maps/` — map sources: `blockout.py` (layout), `courts.py` (court sprites), `assemble.py` (builds the game map into `public/` and `assets/manifest.json`)
+- `public/` — files the game loads (generated; listed in `assets/manifest.json`)
 - Fixed paths: `docs/plan.md`, `CLAUDE.md`, `assets/style-bible.md`, `assets/raw/`, `assets/manifest.json`

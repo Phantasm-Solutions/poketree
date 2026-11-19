@@ -1,6 +1,6 @@
 # Phase 1 · The New Giza map — task list
 
-Status: **1.1–1.4 done, 1.5 (assemble) next**. Goal: NGSC as a pixel-art map members recognize.
+Status: **1.1–1.5 done, 1.6 (map viewer) next**. Goal: NGSC as a pixel-art map members recognize.
 
 ## Batches
 
@@ -188,3 +188,38 @@ For 1.5, from the patch:
 - **Water edges.** Water still meets grass or sand in 11 tiles (kids water play); give it a paved deck.
 - **Courts.** The blockout's courts are skewed quads traced from an oblique photo. Straighten them into rectangles sized to the court sprites (tennis 5 × 9 tiles, padel 3 × 5).
 - **Prop density.** At 32 px tiles, Greenheart is 24 tiles across, so it needs dozens of props, not a handful, to feel like a garden.
+
+## Assemble (1.5)
+
+Status: **done 2026-11-19**. No paid art.
+
+Rebuild the map from scratch:
+
+```
+python assets/maps/blockout.py
+python assets/maps/courts.py .
+python assets/maps/assemble.py .
+```
+
+What changed in the blockout (`blockout.py`):
+
+- **Courts are straight rectangles** placed in tile coords: one row of tennis (3 clay, 1 hard, 5 × 9 tiles each), 4 padel (3 × 5), the stadium (pitch inside a 4-lane track, 38 × 22) and the multi court (6 × 10, turned upright). They are drawn last, so walks and parking don't cut into them, and are listed in the new `courts` object layer.
+- **Kids water play is a paved splash pad** with two splash fountains, not open water.
+
+What the assembler does (`assemble.py`):
+
+- **Edge repair.** Wherever terrains meet that no tileset joins (roof–grass, water–grass, grass–path–sand), it paves the lower terrain, so every building and pool gets a paved apron. 487 tiles were repaired; every corner now has a tile.
+- **Ground.** Painted on a dual grid (one more row and column, shifted half a tile). The 51 Wang tiles in use are packed into `public/maps/terrain.png`.
+- **Collision.** Roofs, water and everything outside the club are blocked, 2950 of 6528 tiles. Props carry a `solid` flag for Phase 2 movement.
+- **Props (492), placed by deterministic rules:**
+  - Landmarks: fountain at Greenheart's centre, club house entrance on its south face, main gate, playground, splash pads, goals on the pitch and umbrellas along the pool decks.
+  - Greenheart: palms around the lawn edge, benches and lamps on the ring path, and shade trees that leave the middle open.
+  - Elsewhere: lamps along the walks, shrubs by building aprons, trees through the gardens (denser along the club edge), and AC units and skylights on roofs.
+- **Output** (the game loads only this): `public/maps/ngsc.tmj`, with layers `ground`, `collision`, `courts`, `props` and `zones`. Also `public/maps/terrain.png`, `public/maps/collision.png`, `public/sprites/*.png` and `assets/manifest.json`. `src/manifest.test.ts` checks that every listed file exists, every placed sprite is listed and the layer sizes match.
+- **Preview** of the whole map: `assets/maps/ngsc-map-preview.png` (3072 × 2176).
+
+Known issues, for whoever knows NGSC to check in 1.6:
+
+- Roofs are still mostly white. Details help, but the club house is not yet a distinct landmark from above.
+- The main pool under the covered hall came out narrow after edge repair.
+- Layout positions are from the oblique aerial; see "To confirm" above.
