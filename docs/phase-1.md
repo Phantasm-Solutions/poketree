@@ -241,3 +241,5 @@ Status: **built 2026-11-19; the two done-criteria still need people and a real p
 
 - [ ] **Load under 5 s on a mid-range Android phone.** Open https://phantasm-solutions.github.io/poketree/ on mobile data and wait for the map. For an exact number, open Chrome remote debugging and read `mapReadyMs`.
 - [ ] **Recognised without labels.** Show the map to someone who knows NGSC, with no labels, and ask them to point at the tennis courts, the club house and the main gate.
+
+Decided 2026-11-19 by the product owner: the script-drawn courts, pitch, track and rooftop details (`courts.py`) stay as they are; they are not redone with PixelLab.
