@@ -1,6 +1,6 @@
 # Phase 1 · The New Giza map — task list
 
-Status: **1.1–1.5 done, 1.6 (map viewer) next**. Goal: NGSC as a pixel-art map members recognize.
+Status: **1.1–1.6 built; Phase 1 closes when the two done-criteria are checked on a real phone and by someone who knows NGSC** (see the end of this file). Goal: NGSC as a pixel-art map members recognize.
 
 ## Batches
 
@@ -223,3 +223,21 @@ Known issues, for whoever knows NGSC to check in 1.6:
 - Roofs are still mostly white. Details help, but the club house is not yet a distinct landmark from above.
 - The main pool under the covered hall came out narrow after edge repair.
 - Layout positions are from the oblique aerial; see "To confirm" above.
+
+## Map viewer (1.6)
+
+Status: **built 2026-11-19; the two done-criteria still need people and a real phone** (below).
+
+- **Opens on the whole club.** The game loads only what `assets/manifest.json` lists and opens zoomed out to show the whole club, centred.
+- **Controls:**
+  - Drag with one finger or the mouse.
+  - Pinch, the mouse wheel or the + / − buttons step through zoom levels ⅛, ¼, ½, 1 and 2. Powers of two keep the pixel art even.
+  - The point under your fingers stays put while you zoom.
+- **Camera logic** is in `src/camera.ts`, tested in `src/camera.test.ts`. The view stays on the map and centres it on any axis where it is smaller than the screen.
+- **Arabic:** labels go through the string files (`loading`, `zoomIn`, `zoomOut`). Right-to-left moves the buttons to the left side.
+- **Load time:** Phaser limits Android to 6 parallel downloads; the viewer raises it to 32. In a 375 × 812 Android emulation the map is ready in about 0.3 s locally. `window.mapReadyMs` reports the time from script start to map ready.
+
+### Phase 1 done-criteria: how to check
+
+- [ ] **Load under 5 s on a mid-range Android phone.** Open https://phantasm-solutions.github.io/poketree/ on mobile data and wait for the map. For an exact number, open Chrome remote debugging and read `mapReadyMs`.
+- [ ] **Recognised without labels.** Show the map to someone who knows NGSC, with no labels, and ask them to point at the tennis courts, the club house and the main gate.

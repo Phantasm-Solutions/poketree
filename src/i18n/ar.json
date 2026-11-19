@@ -1,5 +1,8 @@
 {
   "title": "نادي نيو جيزة الرياضي",
   "subtitle": "بوكتري قريبًا",
-  "switchLanguage": "English"
+  "switchLanguage": "English",
+  "loading": "جارٍ تحميل النادي…",
+  "zoomIn": "تكبير",
+  "zoomOut": "تصغير"
 }

@@ -1,5 +1,8 @@
 {
   "title": "New Giza Sporting Club",
   "subtitle": "Poketree is coming soon",
-  "switchLanguage": "العربية"
+  "switchLanguage": "العربية",
+  "loading": "Loading the club…",
+  "zoomIn": "Zoom in",
+  "zoomOut": "Zoom out"
 }

@@ -7,16 +7,23 @@
     <style>
       html, body { margin: 0; height: 100%; background: #1b2b1f; overflow: hidden; }
       #game canvas { display: block; image-rendering: pixelated; }
-      #lang {
-        position: fixed; top: 12px; inset-inline-end: 12px;
-        font: 16px system-ui, sans-serif; padding: 8px 14px;
-        border: 0; border-radius: 6px; background: #fff; color: #1b2b1f;
+      #game { touch-action: none; }
+      button {
+        font: 16px system-ui, sans-serif; border: 0; border-radius: 6px;
+        background: #fff; color: #1e2430; box-shadow: 0 1px 3px #0006;
       }
+      #lang { position: fixed; top: 12px; inset-inline-end: 12px; padding: 8px 14px; }
+      #zoom { position: fixed; bottom: 16px; inset-inline-end: 12px; display: flex; flex-direction: column; gap: 8px; }
+      #zoom button { width: 44px; height: 44px; font-size: 24px; line-height: 1; padding: 0; }
     </style>
   </head>
   <body>
     <div id="game"></div>
     <button id="lang" type="button"></button>
+    <div id="zoom">
+      <button id="zoom-in" type="button">+</button>
+      <button id="zoom-out" type="button">−</button>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
