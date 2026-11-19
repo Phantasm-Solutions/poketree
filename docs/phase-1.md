@@ -1,6 +1,6 @@
 # Phase 1 · The New Giza map — task list
 
-Status: **1.1–1.3 done, 1.4 task list awaiting approval**. Goal: NGSC as a pixel-art map members recognize.
+Status: **1.1–1.4 done, 1.5 (assemble) next**. Goal: NGSC as a pixel-art map members recognize.
 
 ## Batches
 
@@ -107,7 +107,7 @@ Found by the test patch, for 1.5 to fix in the blockout:
 
 ## Buildings and landmarks (1.4) — task list
 
-Status: **awaiting approval**. Budget: PixelLab shows 265.5 generations left until the 2026-11-22 reset.
+Status: **done 2026-11-19** (results below). Budget before the batch: 265.5 generations left until the 2026-11-22 reset.
 
 Most of the club's buildings are 7–16 tiles across (224–512 px), larger than any PixelLab object (256 px max). So buildings are painted like terrain, from a roof tileset, over the blockout's building shapes. Courts, the pitch and the track are flat surfaces with exact white lines, so a script draws them on the palette (free, crisp lines). PixelLab makes what needs character: trees, the fountain, the gate, the playground and the other props.
 
@@ -154,4 +154,37 @@ Tilesets 30 plus props 61 comes to 91 generations; 182 at most with one regenera
 
 ### Style decision (outlines)
 
-Ground tiles and roofs have no outline. Props and characters use a selective outline in `#1e2430`, so they stand out from the ground. Recorded in `assets/style-bible.md` once approved.
+Ground tiles and roofs have no outline. Props and characters use a selective outline in `#1e2430`, so they stand out from the ground. Recorded in `assets/style-bible.md`.
+
+### Results
+
+Approved 2026-11-19 and generated the same day. Cost: 91 generations, no regenerations.
+
+| Asset | PixelLab id | File |
+|---|---|---|
+| Set D · path ↔ roof | `091433a3-d54f-4801-bf67-2ffcf1692695` (roof base tile `3a470880-d6de-4478-8c21-9169c242268d`) | `assets/raw/tilesets/roof-path.png` / `.json` |
+| Set E · sand ↔ path | `efa8bb1b-5394-431f-a5eb-538cbcfad56d` | `assets/raw/tilesets/sand-path.png` / `.json` |
+| palm | `cd512b56-01e6-4cc3-9de3-741aed7425b2` | `assets/raw/props/palm.png` |
+| shade tree | `20ead522-e662-48c9-a851-ba8cd4e6b6a6` | `assets/raw/props/shade_tree.png` |
+| shrub | `387b9673-73c0-4576-88d6-69e344a85366` | `assets/raw/props/shrub.png` |
+| fountain | `650efe99-c975-4051-b244-23ba99accc02` | `assets/raw/props/fountain.png` |
+| bench | `5b9eb8fc-28cc-4557-baa4-67cab859d2d8` | `assets/raw/props/bench.png` |
+| pool umbrella | `bd08a116-c45c-4426-9edc-6b62bf3e1094` | `assets/raw/props/pool_umbrella.png` |
+| football goal | `667015b0-9f66-4ef1-b1b8-c3dc1283368e` | `assets/raw/props/football_goal.png` |
+| playground | `15990c95-c682-4446-95b7-473868694f51` | `assets/raw/props/playground.png` |
+| splash pad | `00202579-ae35-4951-a52b-65ca51043c1d` | `assets/raw/props/splash_pad.png` |
+| main gate | `6c5dce97-8a65-4d16-b1c7-805c4a110653` | `assets/raw/props/main_gate.png` |
+| lamp post | `16e18e5f-40c8-4a2d-bc4f-96ca708d5da1` | `assets/raw/props/lamp_post.png` |
+| club house entrance | `59320396-1d0d-490a-8404-f5cb98fb15e4` | `assets/raw/props/clubhouse_entrance.png` |
+
+Courts, drawn by `python assets/maps/courts.py .`: `assets/raw/courts/` `tennis_clay`, `tennis_hard`, `padel`, `multi_court` and `stadium` (football pitch inside a 4-lane track, 44 × 26 tiles).
+
+Checks: every sheet, prop and court is fully on the palette, and every prop has a transparent background. (PixelLab's object `/download` returns RGB; take the `rotations/unknown.png` URL instead.) `python assets/maps/patch14.py .` paints `assets/maps/art-test-patch.png` (club house, Greenheart, small pool, kids water play, tennis).
+
+For 1.5, from the patch:
+
+- **Roofs read as plain white areas.** Members recognise buildings by shape and detail, so add rooftop props (AC units, skylights, solar panels) or a second roof colour for the club house.
+- **Building edges.** Roofs meet grass in 72 tiles and water in 14; the planned 1-tile paved apron around every building fixes this.
+- **Water edges.** Water still meets grass or sand in 11 tiles (kids water play); give it a paved deck.
+- **Courts.** The blockout's courts are skewed quads traced from an oblique photo. Straighten them into rectangles sized to the court sprites (tennis 5 × 9 tiles, padel 3 × 5).
+- **Prop density.** At 32 px tiles, Greenheart is 24 tiles across, so it needs dozens of props, not a handful, to feel like a garden.
