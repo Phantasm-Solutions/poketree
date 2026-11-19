@@ -146,6 +146,10 @@ bx = round(sum(p[0] for p in roofs) / len(roofs)); by = max(p[1] for p in roofs 
 place("clubhouse_entrance", bx, by + 1)
 x0, y0, x1, y1 = Z("main_gate")
 place("main_gate", (x0 + x1) // 2, y1 - 1)
+# spawn: the nearest free walkable tile just inside the gate (where Phase 2 puts the character)
+gx, gy = (x0 + x1) // 2, y1 - 4
+spawn = min(((x, y) for y in range(H) for x in range(W) if not blocked[y * W + x] and not occ[y * W + x]
+             and terr[y * W + x] == "path"), key=lambda p: (p[0] - gx) ** 2 + (p[1] - gy) ** 2)
 x0, y0, x1, y1 = Z("kids_garden")
 place("playground", (x0 + x1) // 2, (y0 + y1) // 2 + 1)
 for tx in (35, 38):
@@ -255,7 +259,9 @@ out = dict(type="map", version="1.10", tiledversion="1.11.0", orientation="ortho
                        properties=[dict(name="solid", type="bool", value=p["key"] in SOLID)])
                   for p in sorted(props, key=lambda p: p["y"] + p["h"])]),
     dict(id=5, name="zones", type="objectgroup", draworder="topdown", x=0, y=0, opacity=1, visible=False,
-         objects=[dict(o, id=nid()) for o in tmj["layers"][2]["objects"]]),
+         objects=[dict(o, id=nid()) for o in tmj["layers"][2]["objects"]] +
+                 [dict(id=nid(), name="spawn", type="spawn", point=True, rotation=0, visible=True, width=0, height=0,
+                       x=spawn[0] * T + T // 2, y=spawn[1] * T + T // 2)]),
   ])
 out["nextobjectid"] = oid + 1
 json.dump(out, open(os.path.join(pub, "maps", "ngsc.tmj"), "w"))
@@ -279,5 +285,6 @@ for p in sorted(props, key=lambda p: p["y"] + p["h"]):
         im = im.crop((max(0, -px), max(0, -py), im.width, im.height)); px, py = max(px, 0), max(py, 0)
     img.alpha_composite(im, (px, py))
 img.save(A("assets/maps/ngsc-map-preview.png"))
+print("spawn tile:", spawn)
 print(f"terrain tiles repaired: {repaired}; atlas tiles: {NT}; props: {len(props)} "
       f"{dict(Counter(p['key'] for p in props))}; courts: {len(courts)}; blocked: {sum(blocked)}/{W * H}")

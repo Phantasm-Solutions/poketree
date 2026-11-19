@@ -13,6 +13,7 @@ class MapScene extends Phaser.Scene {
   private wheel = 0;
   private mapW = 0;
   private mapH = 0;
+  private intro = false;
   private loadingText?: Phaser.GameObjects.Text;
 
   constructor() {
@@ -61,7 +62,50 @@ class MapScene extends Phaser.Scene {
       }
     });
 
+    this.input.on('pointerdown', () => this.endIntro());
+    this.input.on('wheel', () => this.endIntro());
+    const spawn = map.getObjectLayer('zones')?.objects.find((o) => o.type === 'spawn');
+    if (spawn) this.playIntro(spawn.x!, spawn.y!);
+
     (window as unknown as { mapReadyMs: number }).mapReadyMs = Math.round(performance.now() - startedAt);
+  }
+
+  /** Show the whole club for a moment, then glide in to the spawn point (where the player starts). */
+  private playIntro(x: number, y: number) {
+    const target = ZOOMS.indexOf(1);
+    const { width, height } = this.scale.gameSize;
+    // aim at the clamped view so the camera doesn't jump at the map edge when the glide ends
+    const cx = clampScroll(x - width / 2, 1, width, this.mapW) + width / 2;
+    const cy = clampScroll(y - height / 2, 1, height, this.mapH) + height / 2;
+    const cam = this.cameras.main;
+    const land = () => {
+      this.intro = false;
+      this.level = target;
+      cam.setZoom(ZOOMS[target]).centerOn(cx, cy);
+      this.clamp();
+    };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return land();
+    this.intro = true;
+    this.time.delayedCall(1200, () => {
+      if (!this.intro) return;
+      cam.pan(cx, cy, 1800, 'Sine.easeInOut');
+      cam.zoomTo(ZOOMS[target], 1800, 'Sine.easeInOut', false, (_c: unknown, done: number) => {
+        if (done === 1 && this.intro) land();
+      });
+    });
+  }
+
+  /** Any touch, wheel or button during the intro stops it where it is. */
+  endIntro() {
+    if (!this.intro) return;
+    this.intro = false;
+    const cam = this.cameras.main;
+    cam.panEffect.reset();
+    cam.zoomEffect.reset();
+    // snap to the nearest zoom level so pixel art stays even
+    this.level = ZOOMS.reduce((best, z, i) => (Math.abs(Math.log2(z / cam.zoom)) < Math.abs(Math.log2(ZOOMS[best] / cam.zoom)) ? i : best), 0);
+    cam.setZoom(ZOOMS[this.level]);
+    this.clamp();
   }
 
   private onMove(p: Phaser.Input.Pointer) {
@@ -120,6 +164,8 @@ const game = new Phaser.Game({
   scene: MapScene,
 });
 
+if (import.meta.env.DEV) (window as unknown as { game: Phaser.Game }).game = game; // for stepping frames in tests
+
 window.addEventListener('resize', () => {
   const f = integerFit(window.innerWidth, window.innerHeight);
   game.scale.setZoom(f.zoom);
@@ -138,7 +184,7 @@ el('lang').addEventListener('click', () => {
   setLang(getLang() === 'en' ? 'ar' : 'en');
   labels();
 });
-el('zoom-in').addEventListener('click', () => scene()?.zoomBy(1));
-el('zoom-out').addEventListener('click', () => scene()?.zoomBy(-1));
+el('zoom-in').addEventListener('click', () => { scene()?.endIntro(); scene()?.zoomBy(1); });
+el('zoom-out').addEventListener('click', () => { scene()?.endIntro(); scene()?.zoomBy(-1); });
 setLang('en');
 labels();

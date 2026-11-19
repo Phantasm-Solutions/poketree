@@ -228,7 +228,7 @@ Known issues, for whoever knows NGSC to check in 1.6:
 
 Status: **built 2026-11-19; the two done-criteria still need people and a real phone** (below).
 
-- **Opens on the whole club.** The game loads only what `assets/manifest.json` lists and opens zoomed out to show the whole club, centred.
+- **Opens on the whole club, then zooms in.** The game loads only what `assets/manifest.json` lists. It shows the whole club for 1.2 s, then glides in over 1.8 s to 1× at the spawn point just inside the main gate, where Phase 2 puts the player's character. Any touch, wheel or button stops the glide at the nearest zoom level. With reduced motion turned on, it jumps straight to the spawn point. The spawn is a `spawn` point in the map's `zones` layer, chosen by `assemble.py`.
 - **Controls:**
   - Drag with one finger or the mouse.
   - Pinch, the mouse wheel or the + / − buttons step through zoom levels ⅛, ¼, ½, 1 and 2. Powers of two keep the pixel art even.
