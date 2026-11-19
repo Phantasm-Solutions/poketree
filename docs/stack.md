@@ -1,6 +1,6 @@
 # Poketree — Stack
 
-Status: **draft, awaiting approval**. Rule: pick the least-friction option for Claude Code, and decide each thing only when its phase starts.
+Status: **approved 2026-11-19**; the product owner delegated all stack decisions to Claude Code. Rule: pick the least-friction option for Claude Code, and decide each thing only when its phase starts.
 
 ## Decided now (Phase 0)
 
@@ -43,4 +43,10 @@ More folders get added when a phase needs them.
 
 ## Approval
 
-- [ ] Approved by: ________  Date: ________
+- [x] Approved by: product owner (delegated to Claude Code)  Date: 2026-11-19
+
+## Live services
+
+- Repo: github.com/Phantasm-Solutions/poketree
+- Staging: https://phantasm-solutions.github.io/poketree/ (deployed by CI on every push to `main`)
+- Supabase: org "Phantasm Solutions" (free), project `poketree`, region Europe. URL and anon key go in environment variables when a phase first uses them.

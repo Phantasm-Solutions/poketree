@@ -1,6 +1,6 @@
 # Phase 1 · The New Giza map — task list
 
-Status: **1.1 and 1.2 done (first pass), 1.3 next**. Goal: NGSC as a pixel-art map members recognize.
+Status: **1.1–1.3 done, 1.4 task list awaiting approval**. Goal: NGSC as a pixel-art map members recognize.
 
 ## Batches
 
@@ -104,3 +104,54 @@ Found by the test patch, for 1.5 to fix in the blockout:
 - The kids water play's water touches grass and sand directly (22 tiles); these sets have no grass ↔ water or sand ↔ water edge. Either give it a paved deck in `blockout.py` or add a grass ↔ water set in 1.4/1.5.
 - Greenheart's west sand pit touches the path ring (5 tiles); there is no sand ↔ path edge. Pull the sand ellipse 1 tile into the lawn.
 - One-tile diagonal paths render as stair-steps; widen them to two tiles or straighten them.
+
+## Buildings and landmarks (1.4) — task list
+
+Status: **awaiting approval**. Budget: PixelLab shows 265.5 generations left until the 2026-11-22 reset.
+
+Most of the club's buildings are 7–16 tiles across (224–512 px), larger than any PixelLab object (256 px max). So buildings are painted like terrain, from a roof tileset, over the blockout's building shapes. Courts, the pitch and the track are flat surfaces with exact white lines, so a script draws them on the palette (free, crisp lines). PixelLab makes what needs character: trees, the fountain, the gate, the playground and the other props.
+
+### Tasks
+
+1. **Set D · path ↔ roof** (tileset, 15 gen). Every building gets a 1-tile paved apron in 1.5, so roofs only ever meet path.
+2. **Set E · sand ↔ path** (tileset, 15 gen). Chains A's path and C's sand; this fixes the Greenheart sand pit and the kids areas without reshaping them.
+3. **Court surfaces by script** (free): clay, hard, padel/green, football pitch with mowing stripes, red running track with lanes. Lines in `#ffffff`, nets in `#1e2430`. Kids garden becomes sand with playground props, since its brown isn't on the palette.
+4. **Props** (12 objects, about 61 gen): listed below.
+5. **Check** each asset (on palette, size, transparent background), then paint a test patch: club house, Greenheart with its fountain, the tennis courts and the small pool.
+6. **Review and save** to `assets/raw/buildings/` and `assets/raw/props/`. One regeneration per rejected asset.
+
+### Tileset settings (D, E)
+
+Same as 1.3: pro, 32 px, low top-down, medium detail, basic shading, Poketree palette.
+
+| Set | Lower | Upper | Shape | Walkable |
+|---|---|---|---|---|
+| D | path from A (`lower_base_tile_id`) | flat white club building roof, light grey gravel, low parapet edge; `transition_size` 0.25 for a short wall | roundness 0, raggedness 0 | path yes, roof no |
+| E | path from A (`lower_base_tile_id`) | sand from C (`upper_base_tile_id`) | roundness 1, raggedness 0.3 | both |
+
+### Props
+
+`create_object_pro_flash`: 1 direction, low top-down, Poketree palette, selective outline. Style anchor: A's grass tile, the same on every call.
+
+| # | Asset | Size (px) | Prompt | Gen |
+|---|---|---|---|---|
+| 1 | date palm | 64 × 96 | tall date palm tree, green fronds, textured trunk | 5 |
+| 2 | shade tree | 64 × 64 | round leafy shade tree, dense green canopy | 5 |
+| 3 | shrub | 32 × 32 | small trimmed green hedge bush | 5 |
+| 4 | fountain | 64 × 64 | round stone garden fountain, turquoise water, central spout | 5 |
+| 5 | bench | 32 × 32 | wooden park bench, light wood, dark metal legs | 5 |
+| 6 | pool umbrella | 64 × 64 | white pool umbrella over two blue sun loungers | 5 |
+| 7 | football goal | 64 × 32 | white football goal with net, seen from above | 5 |
+| 8 | playground | 96 × 96 | kids playground: colorful slide and climbing frame | 5 |
+| 9 | splash pad | 64 × 64 | kids water play fountain: colorful mushroom sprayers | 5 |
+| 10 | main gate | 128 × 64 | modern sporting club entrance gate, pillars, sign board | 6 |
+| 11 | lamp post | 32 × 64 | slim garden lamp post, dark metal | 5 |
+| 12 | club house entrance | 96 × 64 | club house entrance canopy, glass doors, sign | 5 |
+
+### Cost
+
+Tilesets 30 plus props 61 comes to 91 generations; 182 at most with one regeneration each.
+
+### Style decision (outlines)
+
+Ground tiles and roofs have no outline. Props and characters use a selective outline in `#1e2430`, so they stand out from the ground. Recorded in `assets/style-bible.md` once approved.
